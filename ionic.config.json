@@ -1,0 +1,7 @@
+{
+  "name": "Emociones",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
