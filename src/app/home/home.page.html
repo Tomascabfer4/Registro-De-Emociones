@@ -1,20 +1,68 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+<ion-header>
+  <ion-toolbar color="primary" class="header-toolbar">
+    <ion-title>Registrar Emoción</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <ion-card class="styled-card">
+    <ion-card-header>
+      <ion-card-title>Agregar Nueva Emoción</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="emocionesForm">
+        <ion-item class="styled-item" button (click)="abrirPicker('curso')">
+          <ion-label>Curso</ion-label>
+          <p>{{ emocionesForm.value.curso || 'Seleccionar...' }}</p>
+        </ion-item>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+        <ion-item class="styled-item" button (click)="abrirPicker('asignatura')">
+          <ion-label>Asignatura</ion-label>
+          <p>{{ emocionesForm.value.asignatura || 'Seleccionar...' }}</p>
+        </ion-item>
+
+        <ion-item class="styled-item" button (click)="abrirPicker('actividad')">
+          <ion-label>Actividad</ion-label>
+          <p>{{ emocionesForm.value.actividad || 'Seleccionar...' }}</p>
+        </ion-item>
+
+        <div *ngFor="let emo of emocionesSeleccionadas; let i = index">
+          <ion-item class="styled-item">
+            <ion-label>Emoción</ion-label>
+            <ion-select (ionChange)="actualizarEmocion(i, $event)" placeholder="Seleccionar emoción">
+              <ion-select-option *ngFor="let opcion of listaEmociones" [value]="opcion">{{ opcion }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item class="styled-item">
+            <ion-label>Valoración</ion-label>
+            <ion-range [min]="0" [max]="5" [snaps]="true" [ticks]="true" [pin]="true"
+              (ionChange)="actualizarValoracion(i, $event)">
+            </ion-range>
+          </ion-item>
+        </div>
+
+        <ion-button expand="full" color="secondary" shape="round" class="animated-button"
+          (click)="agregarCampoEmocion()">Añadir otra emoción</ion-button>
+        <ion-button expand="full" color="tertiary" shape="round" class="animated-button"
+          (click)="agregarEmocion()">Guardar Emociones</ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="emocionesGuardadas.length > 0" class="styled-card">
+    <ion-card-header>
+      <ion-card-title>Lista de Emociones Añadidas</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item class="styled-item" *ngFor="let emocion of emocionesGuardadas">
+          <p>{{ emocion.curso }} - {{ emocion.asignatura }} - {{ emocion.actividad }} - Emoción:
+            {{ emocion.emocion }} - Valor: {{ emocion.rango }}</p>
+        </ion-item>
+      </ion-list>
+      <ion-button expand="full" color="success" shape="round" class="animated-button"
+        (click)="enviarEmocionesAFirebase()">Guardar Todas</ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
