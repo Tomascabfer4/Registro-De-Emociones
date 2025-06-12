@@ -1,3 +1,4 @@
+<!-- home.page.html -->
 <ion-header>
   <ion-toolbar color="primary" class="header-toolbar">
     <ion-title>Registrar Emoción</ion-title>
@@ -11,21 +12,31 @@
     </ion-card-header>
     <ion-card-content>
       <form [formGroup]="emocionesForm">
-        <ion-item class="styled-item" button (click)="abrirPicker('curso')">
+        <!-- Curso -->
+        <ion-item class="styled-item">
           <ion-label>Curso</ion-label>
-          <p>{{ emocionesForm.value.curso || 'Seleccionar...' }}</p>
+          <ion-select formControlName="curso" placeholder="Seleccionar curso">
+            <ion-select-option *ngFor="let c of cursos" [value]="c">{{ c }}</ion-select-option>
+          </ion-select>
         </ion-item>
 
-        <ion-item class="styled-item" button (click)="abrirPicker('asignatura')">
+        <!-- Asignatura -->
+        <ion-item class="styled-item">
           <ion-label>Asignatura</ion-label>
-          <p>{{ emocionesForm.value.asignatura || 'Seleccionar...' }}</p>
+          <ion-select formControlName="asignatura" placeholder="Seleccionar asignatura">
+            <ion-select-option *ngFor="let a of asignaturas" [value]="a">{{ a }}</ion-select-option>
+          </ion-select>
         </ion-item>
 
-        <ion-item class="styled-item" button (click)="abrirPicker('actividad')">
+        <!-- Actividad -->
+        <ion-item class="styled-item">
           <ion-label>Actividad</ion-label>
-          <p>{{ emocionesForm.value.actividad || 'Seleccionar...' }}</p>
+          <ion-select formControlName="actividad" placeholder="Seleccionar actividad">
+            <ion-select-option *ngFor="let act of actividades" [value]="act">{{ act }}</ion-select-option>
+          </ion-select>
         </ion-item>
 
+        <!-- Emociones dinámicas -->
         <div *ngFor="let emo of emocionesSeleccionadas; let i = index">
           <ion-item class="styled-item">
             <ion-label>Emoción</ion-label>
@@ -36,7 +47,8 @@
 
           <ion-item class="styled-item">
             <ion-label>Valoración</ion-label>
-            <ion-range [min]="0" [max]="5" [snaps]="true" [ticks]="true" [pin]="true"
+            <ion-range
+              [min]="0" [max]="5" [snaps]="true" [ticks]="true" [pin]="true"
               (ionChange)="actualizarValoracion(i, $event)">
             </ion-range>
           </ion-item>
@@ -57,8 +69,10 @@
     <ion-card-content>
       <ion-list>
         <ion-item class="styled-item" *ngFor="let emocion of emocionesGuardadas">
-          <p>{{ emocion.curso }} - {{ emocion.asignatura }} - {{ emocion.actividad }} - Emoción:
-            {{ emocion.emocion }} - Valor: {{ emocion.rango }}</p>
+          <p>
+            {{ emocion.curso }} - {{ emocion.asignatura }} - {{ emocion.actividad }}
+            - Emoción: {{ emocion.emocion }} - Valor: {{ emocion.rango }}
+          </p>
         </ion-item>
       </ion-list>
       <ion-button expand="full" color="success" shape="round" class="animated-button"
